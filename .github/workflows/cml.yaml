@@ -1,20 +1,32 @@
 name: model-training
 on: [push]
+
 jobs:
   run:
     runs-on: ubuntu-latest
     container: docker://dvcorg/cml-py3:latest
+
     steps:
+      # Check out the repository code
       - uses: actions/checkout@v3
+
+      # Set up Python (v4 is compatible with Node.js 20)
       - uses: actions/setup-python@v4
+
+      # Set up CML (use the latest stable version)
       - uses: iterative/setup-cml@v1
+
+      # Train the model and post results
       - name: Train model
         env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Use GitHub token for CML
         run: |
-          pip install -r requirements.txt
-          python train.py
+          pip install -r requirements.txt  # Install dependencies
+          python train.py  # Run the training script
 
+          # Prepare the CML report
           cat metrics.txt >> report.md
           echo "![](./plot.png)" >> report.md
+
+          # Post the report as a comment on the PR
           cml comment create report.md
