@@ -17,18 +17,16 @@ jobs:
           pip install -r requirements.txt
           python train.py
 
-          # Check if plot.png exists and is valid
+          # Check if plot.png exists
           if [ ! -f ./plot.png ]; then
             echo "plot.png not found"
             exit 1
           fi
 
-          # Publish image and create report
+          # Create the Markdown report
           echo "## Model Report" > report.md
-          cml publish plot.png --md >> report.md
-
-          # Append metrics to report
           cat metrics.txt >> report.md
+          echo "![Model Performance](./plot.png)" >> report.md
 
-          # Create comment with the report
+          # Post the report as a comment on the PR
           cml comment create report.md --token=${{ secrets.GITHUB_TOKEN }}
