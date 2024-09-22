@@ -29,6 +29,15 @@ jobs:
             exit 1
           fi
 
+      - name: Output the content of metrics.txt
+        run: |
+          echo "Displaying metrics.txt content:"
+          cat metrics.txt
+
+      - name: Comment the report with plot.png
+        env:
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           # Create the Markdown report
           echo "## Model Report" > report.md
           cat metrics.txt >> report.md
