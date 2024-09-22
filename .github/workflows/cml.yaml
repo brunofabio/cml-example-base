@@ -1,12 +1,15 @@
 name: model-training
 on: [push]
+
 jobs:
   run:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
       - uses: iterative/setup-cml@v1
+
       - name: Train model
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -14,6 +17,18 @@ jobs:
           pip install -r requirements.txt
           python train.py
 
+          # Check if plot.png exists and is valid
+          if [ ! -f ./plot.png ]; then
+            echo "plot.png not found"
+            exit 1
+          fi
+
+          # Publish image and create report
+          echo "## Model Report" > report.md
+          cml publish plot.png --md >> report.md
+
+          # Append metrics to report
           cat metrics.txt >> report.md
-          echo "![](./plot.png)" >> report.md
-          cml comment create report.md
+
+          # Create comment with the report
+          cml comment create report.md --token=${{ secrets.GITHUB_TOKEN }}
