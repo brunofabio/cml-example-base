@@ -28,3 +28,7 @@ jobs:
             echo "plot.png not found!"
             exit 1
           fi
+
+          cat metrics.txt >> report.md
+          echo "![](./plot.png)" >> report.md
+          cml comment create report.md
