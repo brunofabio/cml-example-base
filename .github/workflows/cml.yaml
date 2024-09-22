@@ -41,7 +41,7 @@ jobs:
           # Create the Markdown report
           echo "## Model Report" > report.md
           cat metrics.txt >> report.md
-          echo "![Model Performance](./plot.png)" >> report.md
+          echo "![Model Performance](plot.png)" >> report.md
 
           # Post the report as a comment in the pull request
-          cml comment create report.md --token=${{ secrets.GITHUB_TOKEN }}
+          cml comment create report.md
