@@ -4,7 +4,7 @@ on: [push]
 jobs:
   run:
     runs-on: ubuntu-latest
-    container: docker://dvcorg/cml-py3:latest
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -43,9 +43,7 @@ jobs:
           cat metrics.txt >> report.md
           cat report.md
 
-          cml-publish plot.png --md >> report.md
-
-          # echo "![Model Performance](plot.png)" >> report.md
+          echo "![](./plot.png)" >> report.md
           cat report.md
           # Post the report as a comment in the pull request
           cml-send-comment report.md
