@@ -34,23 +34,15 @@ jobs:
           echo "Displaying metrics.txt content:"
           cat metrics.txt
 
-      - name: Publish plot.png
+      - name: Comment the report with plot.png
         env:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Publish the plot as an asset and capture the URL
-          IMAGE_URL=$(cml publish plot.png)
-          echo "Image published at: $IMAGE_URL"
-
-          # Create the Markdown report with the published image URL
+          # Create the Markdown report
           echo "## Model Report" > report.md
           cat metrics.txt >> report.md
-          echo "![Model Performance]($IMAGE_URL)" >> report.md
           cat report.md
-
-      - name: Comment the report
-        env:
-          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
+          # echo "![Model Performance](plot.png)" >> report.md
+          cat report.md
           # Post the report as a comment in the pull request
-          cml comment create report.md
+          cml send-comment create report.md
