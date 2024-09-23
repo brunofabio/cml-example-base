@@ -42,7 +42,10 @@ jobs:
           echo "## Model Report" > report.md
           cat metrics.txt >> report.md
           cat report.md
+
+          cml-publish plot.png --md >> report.md
+
           # echo "![Model Performance](plot.png)" >> report.md
           cat report.md
           # Post the report as a comment in the pull request
-          cml comment create report.md
+          cml-send-comment report.md
