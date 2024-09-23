@@ -45,4 +45,4 @@ jobs:
           # echo "![Model Performance](plot.png)" >> report.md
           cat report.md
           # Post the report as a comment in the pull request
-          cml send-comment create report.md
+          cml comment create report.md
